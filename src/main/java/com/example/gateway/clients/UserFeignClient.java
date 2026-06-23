@@ -30,6 +30,7 @@ public interface UserFeignClient {
     @GetMapping("/AllCustomers")
     public ResponseEntity<?> AllCustomers();
 
+
     @PostMapping("/AddCustomer")
     public ResponseEntity<?> addCustomer(@RequestBody CustomerRequestDto customerRequestDto);
 

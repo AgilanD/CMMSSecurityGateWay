@@ -1,7 +1,14 @@
-package com.example.gateway.entity;
+package com.example.gateway.common;
 
+
+import com.example.gateway.entity.Users;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -10,35 +17,37 @@ import org.springframework.data.annotation.LastModifiedDate;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "users")
+@Table(name = "audit_logs")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Users {
+public class AuditLogs {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true, length = 150)
-    private String username;
+    @Column(name = "table_name", nullable = false)
+    private String tableName;
 
-    @Column(nullable = false)
-    private String password;
-
-    @Column(nullable = false, unique = true)
-    private String email;
+    @Column(name = "record_id", nullable = false)
+    private Long recordId;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private UserRole role;
+    private AuditAction action;
 
-    @Column(name = "is_active", nullable = false)
-    private boolean isActive = true;
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(name = "changed_data", columnDefinition = "jsonb")
+    private String changedData;
 
-    @Column(name = "last_login")
-    private LocalDateTime lastLogin;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "performed_by_id", nullable = true)
+    private Users performedBy;
+
+    @Column(name = "ip_address")
+    private String ipAddress;
 
 
     @CreatedDate
@@ -61,5 +70,10 @@ public class Users {
     @Column(name = "last_modified_by", nullable = false, columnDefinition = "BIGINT DEFAULT 1")
     private Long lastModifiedBy = 1L;
 
+
+
+    public enum AuditAction {
+        CREATE, UPDATE, DELETE, LOGIN_SUCCESS, LOGIN_FAILURE
+    }
 
 }

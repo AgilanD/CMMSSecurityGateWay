@@ -39,7 +39,7 @@ public interface UserFeignClientMasterData {
     @PostMapping("/AddSuppliers")
     public String AddSuppliers(@RequestBody SupplierRequestDto suppilerRequestDto);
 
-    @GetMapping("/GetById")
+    @GetMapping("/GetById/{id}")
     public Suppliers GetSupplierById(@RequestParam Long id);
 
 

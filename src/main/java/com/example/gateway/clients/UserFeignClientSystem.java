@@ -1,6 +1,6 @@
 package com.example.gateway.clients;
 
-import com.example.gateway.common.AuditLogs;
+import com.example.gateway.common.entity.AuditLogs;
 import com.example.gateway.common.dto.*;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;

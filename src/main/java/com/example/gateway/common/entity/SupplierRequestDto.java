@@ -1,4 +1,4 @@
-package com.example.gateway.common;
+package com.example.gateway.common.entity;
 
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;

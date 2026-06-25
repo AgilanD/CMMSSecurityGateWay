@@ -1,4 +1,4 @@
-package com.example.gateway.common;
+package com.example.gateway.common.entity;
 
 
 import com.example.gateway.entity.Users;

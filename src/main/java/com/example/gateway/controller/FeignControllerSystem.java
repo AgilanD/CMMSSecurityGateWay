@@ -1,7 +1,7 @@
 package com.example.gateway.controller;
 
 import com.example.gateway.clients.UserFeignClientSystem;
-import com.example.gateway.common.AuditLogs;
+import com.example.gateway.common.entity.AuditLogs;
 import com.example.gateway.common.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

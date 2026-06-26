@@ -1,7 +1,7 @@
 package com.example.gateway.controller;
 
 
-import cmms.HumanResource.entity.Plants;
+import cmms.HumanResource.common.entity.Plants;
 import com.example.gateway.Dto.CarModuleRequestDto;
 import com.example.gateway.Dto.CarModuleResponseDto;
 import com.example.gateway.Dto.PlantsRequestDto;

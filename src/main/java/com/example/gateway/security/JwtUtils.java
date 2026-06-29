@@ -104,7 +104,7 @@ public class JwtUtils {
 
 
 
-    public Long getUserIdFromToken(String token) {
+    public String getUserIdFromToken(String token) {
         Key key = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
 
         Claims claims = Jwts.parserBuilder()
@@ -119,27 +119,27 @@ public class JwtUtils {
         log.info(userIdClaim.toString());
 
 
+       return userIdClaim.toString();
 
 
 
 
 
 
-
-        if (userIdClaim != null) {
-            if (userIdClaim instanceof Number) {
-                return ((Number) userIdClaim).longValue();
-            }
-            return Long.parseLong(userIdClaim.toString().trim());
-        }
-
-        String subject = claims.getSubject();
-        try {
-            return Long.parseLong(subject.trim());
-
-        } catch (NumberFormatException e) {
-            return 1L;
-        }
+//        if (userIdClaim != null) {
+//            if (userIdClaim instanceof Number) {
+//                return ((Number) userIdClaim).longValue();
+//            }
+//            return Long.parseLong(userIdClaim.toString().trim());
+//        }
+//
+//        String subject = claims.getSubject();
+//        try {
+//            return Long.parseLong(subject.trim());
+//
+//        } catch (NumberFormatException e) {
+//            return 1L;
+//        }
 
     }
 

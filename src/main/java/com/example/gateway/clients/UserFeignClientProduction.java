@@ -5,13 +5,14 @@ import com.example.gateway.common.dto.QualityInspectionRequestDto;
 import com.example.gateway.common.dto.QualityInspectionResponseDto;
 import com.example.gateway.common.dto.VehicleInventoryRequestDto;
 import com.example.gateway.common.dto.VehicleInventoryResponseDto;
+import com.example.gateway.config.FeignClientInterceptorConfig;
 import jakarta.validation.Valid;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@FeignClient(name = "Production", url = "http://localhost:8084/Production")
+@FeignClient(name = "Production", url = "http://localhost:8084/Production",configuration = FeignClientInterceptorConfig.class)
 public interface UserFeignClientProduction {
 
 

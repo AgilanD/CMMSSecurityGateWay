@@ -8,6 +8,7 @@ import com.example.gateway.Dto.PlantsRequestDto;
 import com.example.gateway.Dto.PlantsResponseDto;
 import com.example.gateway.common.entity.SupplierRequestDto;
 import com.example.gateway.common.entity.Suppliers;
+import com.example.gateway.config.FeignClientInterceptorConfig;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
-@FeignClient(name = "MasterData", url = "http://localhost:8083/MasterData")
+@FeignClient(name = "MasterData", url = "http://localhost:8083/MasterData",configuration = FeignClientInterceptorConfig.class)
 public interface UserFeignClientMasterData {
 
 

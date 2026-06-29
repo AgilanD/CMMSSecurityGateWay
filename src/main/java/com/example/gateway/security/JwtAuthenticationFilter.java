@@ -147,7 +147,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
             String username = jwtUtils.getUsernameFromToken(token);
             String role = jwtUtils.getRoleFromToken(token);
 
-            Long userId = jwtUtils.getUserIdFromToken(token);
+            System.out.println("Role"+role);
+
+            Long userId = Long.parseLong(jwtUtils.getUserIdFromToken(token));
 
             SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + role);
 

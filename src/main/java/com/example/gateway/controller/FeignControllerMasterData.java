@@ -7,9 +7,8 @@ import com.example.gateway.Dto.CarModuleResponseDto;
 import com.example.gateway.Dto.PlantsRequestDto;
 import com.example.gateway.Dto.PlantsResponseDto;
 import com.example.gateway.clients.UserFeignClientMasterData;
-import com.example.gateway.common.AuditLogs;
-import com.example.gateway.common.SupplierRequestDto;
-import com.example.gateway.common.Suppliers;
+import com.example.gateway.common.entity.SupplierRequestDto;
+import com.example.gateway.common.entity.Suppliers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

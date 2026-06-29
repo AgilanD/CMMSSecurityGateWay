@@ -3,6 +3,7 @@ package com.example.gateway.service;
 import com.example.gateway.entity.Users;
 import com.example.gateway.repository.UserRepository;
 import com.example.gateway.security.JwtUtils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseCookie;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -10,6 +11,7 @@ import java.time.LocalDateTime;
 import java.util.regex.Pattern;
 
 @Service
+@RequiredArgsConstructor
 public class AuthService {
 
     private final UserRepository userRepository;
@@ -19,11 +21,6 @@ public class AuthService {
     private static final Pattern PASSWORD_PATTERN =
             Pattern.compile("^(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$");
 
-    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtUtils jwtUtils) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.jwtUtils = jwtUtils;
-    }
 
     public void registerUser(Users user) {
         if (userRepository.existsByUsername(user.getUsername())) {

@@ -66,7 +66,7 @@
 
 
 
-package com.example.gateway.common;
+package com.example.gateway.common.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;

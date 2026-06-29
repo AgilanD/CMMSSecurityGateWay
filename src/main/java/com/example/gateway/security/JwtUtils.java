@@ -6,24 +6,35 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
+
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
+import java.util.*;
 
 @Component
+@Slf4j
 public class JwtUtils {
 
     @Value("${app.jwt.secret}")
-    private String jwtSecret;
+    private String jwtSecret ;
+
+
 
     @Value("${app.jwt.expiration-ms}")
     private int jwtExpirationMs;
 
     @Value("${app.jwt.cookie-name}")
     private String cookieName;
+
 
     private Key getSignKey() {
         return Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
@@ -36,7 +47,6 @@ public class JwtUtils {
 
         Claims claims = Jwts.claims().setSubject(username);
         claims.put("role", role);
-
         claims.put("id",id);
 
         String jwt = Jwts.builder()
@@ -91,4 +101,46 @@ public class JwtUtils {
             return false;
         }
     }
+
+
+
+    public Long getUserIdFromToken(String token) {
+        Key key = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
+
+        Claims claims = Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+
+        Object userIdClaim = claims.get("id");
+
+        System.out.println("<=====================================================================================>");
+        log.info(userIdClaim.toString());
+
+
+
+
+
+
+
+
+
+        if (userIdClaim != null) {
+            if (userIdClaim instanceof Number) {
+                return ((Number) userIdClaim).longValue();
+            }
+            return Long.parseLong(userIdClaim.toString().trim());
+        }
+
+        String subject = claims.getSubject();
+        try {
+            return Long.parseLong(subject.trim());
+
+        } catch (NumberFormatException e) {
+            return 1L;
+        }
+
+    }
+
 }

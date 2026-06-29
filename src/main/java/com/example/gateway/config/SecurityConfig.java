@@ -2,6 +2,7 @@ package com.example.gateway.config;
 
 import com.example.gateway.exception.JwtAuthenticationEntryPoint;
 import com.example.gateway.security.JwtAuthenticationFilter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -15,15 +16,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableMethodSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final JwtAuthenticationEntryPoint unauthorizedHandler;
 
-    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter, JwtAuthenticationEntryPoint unauthorizedHandler) {
-        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
-        this.unauthorizedHandler = unauthorizedHandler;
-    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {

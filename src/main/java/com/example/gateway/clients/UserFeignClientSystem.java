@@ -22,21 +22,6 @@ public interface UserFeignClientSystem {
 
 
 
-    @PostMapping("/CreateOrder")
-    public ProductionOrderResponseDto createOrder(@RequestBody ProductionOrderRequestDto requestDto);
-
-    @GetMapping("/GetAllOrder")
-    public List<ProductionOrderResponseDto> getAllOrders();
-
-    @GetMapping("/GetOrderByid/{id}")
-    public ProductionOrderResponseDto getOrderById(@PathVariable Long id);
-
-    @PutMapping("/UpdateOrder/{id}")
-    public ProductionOrderResponseDto updateOrder(
-            @RequestBody ProductionOrderRequestDto requestDto);
-
-    @DeleteMapping("/DeleteOrder/{id}")
-    public void deleteOrder(@PathVariable Long id);
 
 
 

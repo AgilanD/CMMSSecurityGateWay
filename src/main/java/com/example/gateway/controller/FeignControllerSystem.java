@@ -34,34 +34,6 @@ public class FeignControllerSystem {
 
 
 
-    @PostMapping("/System/CreateOrder")
-    public ProductionOrderResponseDto createOrder(@RequestBody ProductionOrderRequestDto requestDto) {
-        return userFeignClientSystem.createOrder(requestDto);
-    }
-
-    @GetMapping("" +
-            "")
-    public List<ProductionOrderResponseDto> getAllOrders() {
-        return userFeignClientSystem.getAllOrders();
-    }
-
-    @GetMapping("/System/GetOrderByid/{id}")
-    public ProductionOrderResponseDto getOrderById(@PathVariable Long id) {
-       return userFeignClientSystem.getOrderById(id);
-    }
-
-    @PutMapping("/System/UpdateOrder/{id}")
-    public ProductionOrderResponseDto updateOrder(@PathVariable Long id, @RequestBody ProductionOrderRequestDto requestDto) {
-       return userFeignClientSystem.updateOrder(requestDto);
-    }
-
-    @DeleteMapping("/System/DeleteOrder/{id}")
-    public void deleteOrder(@PathVariable Long id) {
-        userFeignClientSystem.deleteOrder(id);
-    }
-
-
-
 
 
     @PostMapping("/System/CreateHistory")

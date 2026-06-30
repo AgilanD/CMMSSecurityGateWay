@@ -5,18 +5,21 @@ import com.example.gateway.clients.UserFeignClientLogistics;
 import com.example.gateway.common.dto.VehicalDeliveryRequestDto;
 import com.example.gateway.common.dto.VehicalDeliveryResponseDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 public class FeignControllerLogistics {
 
     private final UserFeignClientLogistics userFeignClientLogistics;
 
     @GetMapping("/Logistics/checking")
     public String fetchExternalUser() {
+        log.info("GetMapping");
         return userFeignClientLogistics.Checkings();
     }
 
@@ -35,10 +38,11 @@ public class FeignControllerLogistics {
         return  userFeignClientLogistics.getAllVehical();
     }
 
-    @PutMapping("/Logistics/UpdateById/{id}")
+    @PutMapping("/Logistics/UpdateByIdVehicals/{id}")
     public VehicalDeliveryResponseDto updateVehical(
             @PathVariable Long id,
             @RequestBody VehicalDeliveryRequestDto requestDto) {
+        log.info("Hello Bye");
         return  userFeignClientLogistics.updateVehical(id,requestDto);
     }
 

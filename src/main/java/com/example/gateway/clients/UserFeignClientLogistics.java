@@ -3,12 +3,13 @@ package com.example.gateway.clients;
 
 import com.example.gateway.common.dto.VehicalDeliveryRequestDto;
 import com.example.gateway.common.dto.VehicalDeliveryResponseDto;
+import com.example.gateway.config.FeignClientInterceptorConfig;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@FeignClient(name = "Logistics", url = "http://localhost:8082/Logistics")
+@FeignClient(name = "Logistics", url = "http://localhost:8082/Logistics",configuration = FeignClientInterceptorConfig.class)
 public interface UserFeignClientLogistics {
 
     @GetMapping("/checking")

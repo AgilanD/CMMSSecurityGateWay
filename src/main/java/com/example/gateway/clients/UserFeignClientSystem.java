@@ -2,12 +2,13 @@ package com.example.gateway.clients;
 
 import com.example.gateway.common.entity.AuditLogs;
 import com.example.gateway.common.dto.*;
+import com.example.gateway.config.FeignClientInterceptorConfig;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@FeignClient(name = "System", url = "http://localhost:8085/System")
+@FeignClient(name = "System", url = "http://localhost:8085/System",configuration = FeignClientInterceptorConfig.class)
 public interface UserFeignClientSystem {
 
     @GetMapping("/checkings")

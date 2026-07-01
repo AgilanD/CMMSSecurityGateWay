@@ -1,101 +1,3 @@
-////package com.example.gateway.security;
-////
-////import jakarta.servlet.FilterChain;
-////import jakarta.servlet.ServletException;
-////import jakarta.servlet.http.HttpServletRequest;
-////import jakarta.servlet.http.HttpServletResponse;
-////import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-////import org.springframework.security.core.authority.SimpleGrantedAuthority;
-////import org.springframework.security.core.context.SecurityContextHolder;
-////import org.springframework.stereotype.Component;
-////import org.springframework.web.filter.OncePerRequestFilter;
-////import java.io.IOException;
-////import java.util.Collections;
-////
-////@Component
-////public class JwtAuthenticationFilter extends OncePerRequestFilter {
-////
-////    private final JwtUtils jwtUtils;
-////
-////    public JwtAuthenticationFilter(JwtUtils jwtUtils) {
-////        this.jwtUtils = jwtUtils;
-////    }
-////
-////    @Override
-////    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-////            throws ServletException, IOException {
-////
-////        String token = jwtUtils.getJwtFromCookies(request);
-////
-////        if (token != null && jwtUtils.validateToken(token)) {
-////            String username = jwtUtils.getUsernameFromToken(token);
-////            String role = jwtUtils.getRoleFromToken(token);
-////
-////            SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + role);
-////            UsernamePasswordAuthenticationToken authentication =
-////                    new UsernamePasswordAuthenticationToken(username, null, Collections.singletonList(authority));
-////
-////            SecurityContextHolder.getContext().setAuthentication(authentication);
-////        }
-////        filterChain.doFilter(request, response);
-////    }
-////}
-//
-//
-//package com.example.gateway.security;
-//
-//import jakarta.servlet.FilterChain;
-//import jakarta.servlet.ServletException;
-//import jakarta.servlet.http.HttpServletRequest;
-//import jakarta.servlet.http.HttpServletResponse;
-//import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-//import org.springframework.security.core.authority.SimpleGrantedAuthority;
-//import org.springframework.security.core.context.SecurityContextHolder;
-//import org.springframework.stereotype.Component;
-//import org.springframework.web.filter.OncePerRequestFilter;
-//import java.io.IOException;
-//import java.util.Collections;
-//
-//@Component
-//public class JwtAuthenticationFilter extends OncePerRequestFilter {
-//
-//    private final JwtUtils jwtUtils;
-//
-//    public JwtAuthenticationFilter(JwtUtils jwtUtils) {
-//        this.jwtUtils = jwtUtils;
-//    }
-//
-//    @Override
-//    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-//            throws ServletException, IOException {
-//
-//        String path = request.getRequestURI();
-//
-//        // CRITICAL FIX: If the path is a public endpoint, skip this filter completely
-//        if (path.equals("/api/auth/register") || path.equals("/api/auth/login") || path.equals("/api/auth/validate")) {
-//            filterChain.doFilter(request, response);
-//            return;
-//        }
-//
-//        String token = jwtUtils.getJwtFromCookies(request);
-//
-//        if (token != null && jwtUtils.validateToken(token)) {
-//            String username = jwtUtils.getUsernameFromToken(token);
-//            String role = jwtUtils.getRoleFromToken(token);
-//
-//            SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + role);
-//            UsernamePasswordAuthenticationToken authentication =
-//                    new UsernamePasswordAuthenticationToken(username, null, Collections.singletonList(authority));
-//
-//            SecurityContextHolder.getContext().setAuthentication(authentication);
-//        }
-//
-//        filterChain.doFilter(request, response);
-//    }
-//}
-
-
-
 package com.example.gateway.security;
 
 import jakarta.servlet.FilterChain;
@@ -104,29 +6,22 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpServletRequestWrapper;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import org.springframework.web.server.ServerWebExchange;
-import org.springframework.web.server.WebFilter;
-import org.springframework.web.server.WebFilterChain;
-//import reactor.core.publisher.Mono;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.io.IOException;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
-@Slf4j
-public class JwtAuthenticationFilter extends OncePerRequestFilter{
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtUtils jwtUtils;
-
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -140,29 +35,43 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
         }
 
         String token = jwtUtils.getJwtFromCookies(request);
-
         HttpServletRequest requestToForward = request;
 
         if (token != null && jwtUtils.validateToken(token)) {
             String username = jwtUtils.getUsernameFromToken(token);
             String role = jwtUtils.getRoleFromToken(token);
-
-            System.out.println("Role"+role);
-
-            Long userId = Long.parseLong(jwtUtils.getUserIdFromToken(token));
+            String extractedUserId = jwtUtils.getUserIdFromToken(token);
 
             SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + role);
 
             UsernamePasswordAuthenticationToken authentication =
-                    new UsernamePasswordAuthenticationToken(userId, null, Collections.singletonList(authority));
+                    new UsernamePasswordAuthenticationToken(username, token, Collections.singletonList(authority));
             SecurityContextHolder.getContext().setAuthentication(authentication);
+
+
+            if (RequestContextHolder.getRequestAttributes() != null) {
+                RequestContextHolder.currentRequestAttributes().setAttribute(
+                        "RAW_JWT_TOKEN",
+                        token,
+                        ServletRequestAttributes.SCOPE_REQUEST
+                );
+            }
+
 
             requestToForward = new HttpServletRequestWrapper(request) {
                 @Override
                 public String getHeader(String name) {
-                    if ("X-Authenticated-User-Id".equalsIgnoreCase(name)) {
-                        log.info("<==============>"+name);
-                        return String.valueOf(userId);
+                    if ("X-User-Id".equalsIgnoreCase(name) || "X-Authenticated-User-Id".equalsIgnoreCase(name)) {
+                        return extractedUserId;
+                    }
+                    if ("X-User-Name".equalsIgnoreCase(name)) {
+                        return username;
+                    }
+                    if ("X-User-Roles".equalsIgnoreCase(name)) {
+                        return "ROLE_" + role;
+                    }
+                    if ("Authorization".equalsIgnoreCase(name)) {
+                        return "Bearer " + token;
                     }
                     return super.getHeader(name);
                 }
@@ -172,4 +81,3 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
         filterChain.doFilter(requestToForward, response);
     }
 }
-

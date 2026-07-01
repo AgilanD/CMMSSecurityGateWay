@@ -10,10 +10,7 @@ import com.example.gateway.common.entity.SupplierRequestDto;
 import com.example.gateway.common.entity.Suppliers;
 import com.example.gateway.config.FeignClientInterceptorConfig;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -40,8 +37,8 @@ public interface UserFeignClientMasterData {
     @PostMapping("/AddSuppliers")
     public String AddSuppliers(@RequestBody SupplierRequestDto suppilerRequestDto);
 
-    @GetMapping("/GetById/{id}")
-    public Suppliers GetSupplierById(@RequestParam Long id);
+    @GetMapping("/GetsupplierById/{id}")
+    public Suppliers GetSupplierById(@PathVariable Long id);
 
 
 

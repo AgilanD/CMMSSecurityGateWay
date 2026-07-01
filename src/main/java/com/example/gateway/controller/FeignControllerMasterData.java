@@ -53,8 +53,8 @@ public class FeignControllerMasterData {
         return "SuccessFully SuppliersAdded";
     }
 
-    @GetMapping("MasterData/GetById/{id}")
-    public Suppliers GetSupplierById(@RequestParam Long id){
+    @GetMapping("MasterData/GetsupplierById/{id}")
+    public Suppliers GetSupplierById(@PathVariable Long id){
         return userfeignClientMasterData.GetSupplierById(id);
     }
 

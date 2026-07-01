@@ -1,20 +1,15 @@
 package com.example.gateway.controller;
 
-
-import cmms.HumanResource.Dto.CustomerRequestDto;
-import cmms.HumanResource.Dto.CustomerResponseDto;
 import com.example.gateway.Dto.EmployeeRequestDto;
 import com.example.gateway.Dto.EmployeeResponseDto;
 import com.example.gateway.clients.UserFeignClient;
+import com.example.gateway.common.dto.CustomerRequestDto;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-import java.util.Optional;
 
 @RestController
 public class FeignController {
@@ -28,9 +23,7 @@ public class FeignController {
 
     @GetMapping("/human/All")
     public ResponseEntity<?> fetchExternalUser() {
-
         return userfeignClient.getDetails();
-
     }
 
     @PostMapping("/human/addEmployee")

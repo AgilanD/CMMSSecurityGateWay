@@ -2,7 +2,6 @@ package com.example.gateway.config;
 
 import com.example.gateway.security.JwtUtils;
 import feign.RequestInterceptor;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
 import jakarta.servlet.http.HttpServletRequest;

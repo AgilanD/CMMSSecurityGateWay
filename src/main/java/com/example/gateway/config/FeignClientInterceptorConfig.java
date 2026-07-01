@@ -3,6 +3,7 @@ package com.example.gateway.config;
 import com.example.gateway.security.JwtUtils;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,10 +29,16 @@ public class FeignClientInterceptorConfig {
             public void apply(RequestTemplate template) {
                 Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
+
+
+
                 String token = null;
                 String username = null;
                 String roles = null;
-                Long userId = null;
+                String userId = null;
+
+                System.out.println("Authentications      "+authentication);
+                System.out.println("Authentications Crenditional "+authentication.getCredentials() );
 
                 if (authentication != null) {
                     username = authentication.getName();
@@ -52,7 +59,7 @@ public class FeignClientInterceptorConfig {
                         try {
                             String cleanToken = token.startsWith("Bearer ") ? token.substring(7) : token;
 
-                            userId = Long.parseLong(jwtUtils.getUserIdFromToken(cleanToken));
+                            userId = jwtUtils.getUserIdFromToken(cleanToken);
                         } catch (Exception e) {
                             System.out.println(" Could not extract userId claim from JWT string: " + e.getMessage());
                         }
@@ -75,8 +82,10 @@ public class FeignClientInterceptorConfig {
                 }
                 if (username != null) template.header("X-User-Name", username);
                 if (roles != null) template.header("X-User-Roles", roles);
-                if (userId != null) template.header("X-User-Id", String.valueOf(userId));
+                if (userId != null) template.header("X-User-Id", userId);
             }
         };
     }
 }
+
+

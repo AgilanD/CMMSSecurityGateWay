@@ -23,8 +23,8 @@ public interface UserFeignClientLogistics {
     @GetMapping("/GetAllDeliveries")
     public List<VehicalDeliveryResponseDto> getAllVehical();
 
-    @PutMapping("/UpdateById/{id}")
-    public VehicalDeliveryResponseDto updateVehical(@PathVariable Long id, @RequestBody VehicalDeliveryRequestDto requestDto);
+    @PutMapping("/UpdateByIdVehicals/{id}")
+    public VehicalDeliveryResponseDto updateVehical(@PathVariable Long  id, @RequestBody VehicalDeliveryRequestDto requestDto);
 
     @DeleteMapping("/DeleteById/{id}")
     public void deleteVehical(@PathVariable Long id);

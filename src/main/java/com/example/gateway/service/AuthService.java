@@ -8,6 +8,7 @@ import org.springframework.http.ResponseCookie;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.regex.Pattern;
 
 @Service
@@ -49,7 +50,7 @@ public class AuthService {
             throw new IllegalArgumentException("Invalid username or password.");
         }
 
-        user.setLastLogin(LocalDateTime.now());
+        user.setLastLogin(LocalDateTime.now(ZoneId.of("UTC")));
         userRepository.save(user);
 
         return jwtUtils.generateJwtCookie(user.getUsername(), user.getRole().name(),user.getId());

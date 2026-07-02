@@ -72,7 +72,7 @@ public class JwtUtils {
     }
 
     public ResponseCookie getCleanJwtCookie() {
-        return ResponseCookie.from(cookieName, null).path("/").maxAge(0).build();
+        return ResponseCookie.from(cookieName, "").path("/").maxAge(0).build();
     }
 
     public String getUsernameFromToken(String token) {

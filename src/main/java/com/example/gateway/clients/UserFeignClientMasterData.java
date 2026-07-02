@@ -1,7 +1,6 @@
 package com.example.gateway.clients;
 
 
-import cmms.HumanResource.common.entity.Plants;
 import com.example.gateway.Dto.CarModuleRequestDto;
 import com.example.gateway.Dto.CarModuleResponseDto;
 import com.example.gateway.Dto.PlantsRequestDto;
@@ -29,7 +28,7 @@ public interface UserFeignClientMasterData {
     public PlantsResponseDto addPlants(@RequestBody PlantsRequestDto plantsRequestDto);
 
     @GetMapping("/GetAllPlants")
-    public List<Plants> GetAllPlants();
+    public List<?> GetAllPlants();
 
     @GetMapping("/GetAllSuppliers")
     public List<Suppliers> GetAllSuppliers();

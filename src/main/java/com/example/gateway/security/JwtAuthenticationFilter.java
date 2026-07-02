@@ -55,6 +55,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                         token,
                         ServletRequestAttributes.SCOPE_REQUEST
                 );
+                RequestContextHolder.currentRequestAttributes().setAttribute(
+                        "AUDIT_USER_ID",
+                        Long.parseLong(extractedUserId),
+                        ServletRequestAttributes.SCOPE_REQUEST
+                );
             }
 
 

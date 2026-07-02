@@ -1,12 +1,11 @@
 package com.example.gateway.controller;
 
-
-import cmms.HumanResource.common.entity.Plants;
 import com.example.gateway.Dto.CarModuleRequestDto;
 import com.example.gateway.Dto.CarModuleResponseDto;
 import com.example.gateway.Dto.PlantsRequestDto;
 import com.example.gateway.Dto.PlantsResponseDto;
 import com.example.gateway.clients.UserFeignClientMasterData;
+import com.example.gateway.clients.UserFeignClientSystem;
 import com.example.gateway.common.entity.SupplierRequestDto;
 import com.example.gateway.common.entity.Suppliers;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +19,6 @@ public class FeignControllerMasterData {
 
     private final UserFeignClientMasterData userfeignClientMasterData;
 
-
     @GetMapping("/MasterData/Checking")
     public String checking(){
         return userfeignClientMasterData.Checkings();
@@ -28,6 +26,8 @@ public class FeignControllerMasterData {
 
     @PostMapping("/MasterData/AddCustomer")
     public CarModuleResponseDto  addCarModule(@RequestBody CarModuleRequestDto carModuleRequestDtoRequestDto){
+
+
         return userfeignClientMasterData. addCarModule(carModuleRequestDtoRequestDto);
     }
 
@@ -37,7 +37,7 @@ public class FeignControllerMasterData {
     }
 
     @GetMapping("/MasterData/GetAllPlants")
-    public List<Plants> GetAllPlants(){
+    public List<?> GetAllPlants(){
         return userfeignClientMasterData.GetAllPlants();
     }
 
@@ -57,7 +57,5 @@ public class FeignControllerMasterData {
     public Suppliers GetSupplierById(@PathVariable Long id){
         return userfeignClientMasterData.GetSupplierById(id);
     }
-
-
 
 }

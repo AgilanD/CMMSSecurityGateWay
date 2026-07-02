@@ -19,7 +19,7 @@ public class FeignClientInterceptorConfig {
 
     @Bean
     public RequestInterceptor requestInterceptor() {
-        return new RequestInterceptor() {
+         return new RequestInterceptor() {
             @Override
             public void apply(RequestTemplate template) {
                 Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -45,11 +45,7 @@ public class FeignClientInterceptorConfig {
 
 
                     if (token != null) {
-                        try {
                             userId = jwtUtils.getUserIdFromToken(token);
-                        } catch (Exception e) {
-
-                        }
                     }
 
                     if (userId == null || userId.isBlank()) {

@@ -21,10 +21,11 @@ public interface UserFeignClientSystem {
     @PostMapping("/AddAuditLogs")
     public AuditLogResponseDto createAuditLog(@RequestBody AuditLogsRequestDto requestDto);
 
+    @PutMapping("/UpdateAuditLogs/{id}")
+    public AuditLogResponseDto updateAuditLog(@PathVariable Long id, @RequestBody AuditLogsRequestDto requestDto);
 
-
-
-
+    @DeleteMapping("/DeleteAuditLogs/{id}")
+    public String deleteAuditLog(@PathVariable Long id);
 
     @PostMapping("/CreateHistory")
     public ServiceHistoryResponseDto createHistory(@RequestBody ServiceHistoryRequestDto requestDto);

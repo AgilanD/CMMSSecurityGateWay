@@ -31,6 +31,15 @@ public class FeignControllerSystem {
     public AuditLogResponseDto createAuditLog(@RequestBody AuditLogsRequestDto requestDto) {
         return userFeignClientSystem.createAuditLog(requestDto);
     }
+    @PutMapping("/System/UpdateAuditLogs/{id}")
+    public AuditLogResponseDto updateAuditLog(@PathVariable Long id, @RequestBody AuditLogsRequestDto requestDto) {
+        return userFeignClientSystem.updateAuditLog(id,requestDto);
+    }
+
+    @DeleteMapping("/System/DeleteAuditLogs/{id}")
+    public String deleteAuditLog(@PathVariable Long id) {
+        return userFeignClientSystem.deleteAuditLog(id);
+    }
 
 
     @PostMapping("/System/CreateHistory")

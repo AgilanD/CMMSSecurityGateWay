@@ -10,9 +10,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -46,6 +46,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             UsernamePasswordAuthenticationToken authentication =
                     new UsernamePasswordAuthenticationToken(username, token, Collections.singletonList(authority));
+
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
 
@@ -53,7 +54,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 RequestContextHolder.currentRequestAttributes().setAttribute(
                         "RAW_JWT_TOKEN",
                         token,
-                        ServletRequestAttributes.SCOPE_REQUEST
+                        RequestAttributes.SCOPE_REQUEST
+                );
+                RequestContextHolder.currentRequestAttributes().setAttribute(
+                        "AUDIT_USER_ID",
+                        Long.parseLong(extractedUserId),
+                        RequestAttributes.SCOPE_REQUEST
                 );
             }
 
@@ -61,21 +67,30 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             requestToForward = new HttpServletRequestWrapper(request) {
                 @Override
                 public String getHeader(String name) {
-                    if ("X-User-Id".equalsIgnoreCase(name) || "X-Authenticated-User-Id".equalsIgnoreCase(name)) {
-                        return extractedUserId;
+                    if (name == null) {
+                        return super.getHeader(null);
                     }
-                    if ("X-User-Name".equalsIgnoreCase(name)) {
-                        return username;
+
+                    switch (name.toLowerCase()) {
+                        case "x-user-id", "x-authenticated-user-id" -> {
+                            return extractedUserId;
+                        }
+                        case "x-user-name" -> {
+                            return username;
+                        }
+                        case "x-user-roles" -> {
+                            return "ROLE_" + role;
+                        }
+                        case "authorization" -> {
+                            return "Bearer " + token;
+                        }
+                        default -> {
+                            return super.getHeader(name);
+                        }
                     }
-                    if ("X-User-Roles".equalsIgnoreCase(name)) {
-                        return "ROLE_" + role;
-                    }
-                    if ("Authorization".equalsIgnoreCase(name)) {
-                        return "Bearer " + token;
-                    }
-                    return super.getHeader(name);
                 }
             };
+
         }
 
         filterChain.doFilter(requestToForward, response);

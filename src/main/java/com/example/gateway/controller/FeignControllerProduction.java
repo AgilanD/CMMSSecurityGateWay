@@ -18,8 +18,8 @@ public class FeignControllerProduction {
     private final UserFeignClientProduction userFeignClientProduction;
 
     @GetMapping("/Production/Checking")
-    public String Message(){
-        return userFeignClientProduction.Checkings();
+    public String checkingMessage(){
+        return userFeignClientProduction.checkingMessage();
     }
 
     @PostMapping("/Production/AddQualityInspectionResponse")

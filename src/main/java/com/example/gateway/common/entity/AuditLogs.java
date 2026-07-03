@@ -1,6 +1,5 @@
 package com.example.gateway.common.entity;
 
-
 import com.example.gateway.entity.Users;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

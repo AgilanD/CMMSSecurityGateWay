@@ -19,8 +19,7 @@ public class FeignControllerLogistics {
 
     @GetMapping("/Logistics/checking")
     public String fetchExternalUser() {
-        log.info("GetMapping");
-        return userFeignClientLogistics.Checkings();
+        return userFeignClientLogistics.checkingMessage();
     }
 
     @PostMapping("/Logistics/AddDelivery")

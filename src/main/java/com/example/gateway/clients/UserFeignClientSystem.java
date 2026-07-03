@@ -12,19 +12,20 @@ import java.util.List;
 public interface UserFeignClientSystem {
 
     @GetMapping("/checkings")
-    public String Checkings();
+    public String checkingMessage();
 
     @GetMapping("/GetAllAuditLogs")
-    public List<AuditLogs> GetAllAuditLogs();
+    public List<AuditLogs> getAllAuditLogs();
 
 
     @PostMapping("/AddAuditLogs")
     public AuditLogResponseDto createAuditLog(@RequestBody AuditLogsRequestDto requestDto);
 
+    @PutMapping("/UpdateAuditLogs/{id}")
+    public AuditLogResponseDto updateAuditLog(@PathVariable Long id, @RequestBody AuditLogsRequestDto requestDto);
 
-
-
-
+    @DeleteMapping("/DeleteAuditLogs/{id}")
+    public String deleteAuditLog(@PathVariable Long id);
 
     @PostMapping("/CreateHistory")
     public ServiceHistoryResponseDto createHistory(@RequestBody ServiceHistoryRequestDto requestDto);

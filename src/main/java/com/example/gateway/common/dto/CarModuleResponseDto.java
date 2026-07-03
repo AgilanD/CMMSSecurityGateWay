@@ -1,9 +1,6 @@
-package com.example.gateway.Dto;
+package com.example.gateway.common.dto;
 
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,27 +13,17 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CarModuleRequestDto {
+public class CarModuleResponseDto {
 
-    @NotBlank(message = "Model name is mandatory and cannot be blank")
+    private Long id;
     private String modelName;
-
-    @NotNull(message = "Fuel type is mandatory")
     private FuelType fuelType;
-
-    @NotNull(message = "Transmission type is mandatory")
     private Transmission transmission;
-
-    @NotNull(message = "Base price is mandatory")
-    @Positive(message = "Base price must be greater than zero")
     private BigDecimal basePrice;
-
     private String colorOptions;
-
     private LocalDate launchDate;
+    private Boolean isActive;
 
-    @Builder.Default
-    private Boolean isActive = true;
 
     public enum FuelType {
         PETROL, DIESEL, ELECTRIC, HYBRID
@@ -45,7 +32,4 @@ public class CarModuleRequestDto {
     public enum Transmission {
         MANUAL, AUTOMATIC
     }
-
 }
-
-

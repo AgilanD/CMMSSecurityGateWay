@@ -26,9 +26,7 @@ public class VehicleInventoryResponseDto {
     private Long lastModifiedBy;
 
     public enum VehicleStatus {
-
         MANUFACTURED, INSPECTED, DELIVERED
-
     }
 
 }

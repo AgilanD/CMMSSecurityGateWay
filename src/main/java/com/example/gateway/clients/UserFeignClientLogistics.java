@@ -13,7 +13,7 @@ import java.util.List;
 public interface UserFeignClientLogistics {
 
     @GetMapping("/checking")
-    public String Checkings();
+    public String checkingMessage();
 
     @PostMapping("/AddDelivery")
     public VehicalDeliveryResponseDto createVehical(@RequestBody VehicalDeliveryRequestDto requestDto);

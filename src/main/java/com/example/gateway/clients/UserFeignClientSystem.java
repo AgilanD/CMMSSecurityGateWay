@@ -12,10 +12,10 @@ import java.util.List;
 public interface UserFeignClientSystem {
 
     @GetMapping("/checkings")
-    public String Checkings();
+    public String checkingMessage();
 
     @GetMapping("/GetAllAuditLogs")
-    public List<AuditLogs> GetAllAuditLogs();
+    public List<AuditLogs> getAllAuditLogs();
 
 
     @PostMapping("/AddAuditLogs")

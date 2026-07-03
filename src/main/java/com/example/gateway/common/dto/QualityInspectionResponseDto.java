@@ -25,7 +25,6 @@ public class QualityInspectionResponseDto {
     private LocalDateTime lastModifiedAt;
     private Long lastModifiedBy;
 
-
     public enum InspectionResult {
         PASS, FAIL, PENDING
     }

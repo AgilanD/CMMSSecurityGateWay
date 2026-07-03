@@ -1,4 +1,4 @@
-package com.example.gateway.Dto;
+package com.example.gateway.common.dto;
 
 
 import jakarta.validation.constraints.NotBlank;
@@ -26,6 +26,5 @@ public class EmployeeRequestDto {
     @Past(message = "Joining date cannot be a future date")
     @NotNull(message = "Joining date is required")
     private LocalDate joiningDate;
-
 
 }

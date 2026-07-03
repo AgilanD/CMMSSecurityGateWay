@@ -16,14 +16,14 @@ public class FeignControllerSystem {
 
 
     @GetMapping("/System/checkings")
-    public String Message(){
-        return userFeignClientSystem.Checkings();
+    public String checkingMessage(){
+        return userFeignClientSystem.checkingMessage();
     }
 
 
     @GetMapping("/System/GetAllAuditLogs")
-    public List<AuditLogs> GetAllAuditLogs(){
-        return userFeignClientSystem.GetAllAuditLogs();
+    public List<AuditLogs> getAllAuditLogs(){
+        return userFeignClientSystem.getAllAuditLogs();
     }
 
 

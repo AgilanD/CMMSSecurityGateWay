@@ -1,16 +1,15 @@
 package com.example.gateway.entity;
 
+import com.example.gateway.usercontext.UserContext;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
+
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 
 @Entity
 @Table(name = "users")
@@ -43,7 +42,6 @@ public class Users {
     @Column(name = "last_login")
     private LocalDateTime lastLogin;
 
-
     @CreatedDate
     @Column(name = "created_at", nullable = false, columnDefinition = "TIMESTAMP DEFAULT '2026-06-23 19:54:30'")
     private LocalDateTime createdAt;
@@ -53,7 +51,6 @@ public class Users {
     private Long createdBy;
 
     @LastModifiedDate
-
     @Column(name = "last_modified_at", nullable = false, columnDefinition = "TIMESTAMP DEFAULT '2026-06-23 19:54:30'")
     private LocalDateTime lastModifiedAt;
 
@@ -64,37 +61,17 @@ public class Users {
 
     @PrePersist
     protected void onCreate() {
-        LocalDateTime nowUtc = LocalDateTime.now(ZoneId.of("UTC"));
-        this.createdAt = nowUtc;
-        this.lastModifiedAt = nowUtc;
+        this.createdAt = LocalDateTime.now(java.time.ZoneOffset.UTC);
+        this.lastModifiedAt = LocalDateTime.now(java.time.ZoneOffset.UTC);
 
-        long currentActor = 1L;
-        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        if (attributes != null) {
-            Long cachedId = (Long) attributes.getAttribute("AUDIT_USER_ID", ServletRequestAttributes.SCOPE_REQUEST);
-            if (cachedId != null) {
-                currentActor = cachedId;
-            }
-        }
-
-        this.createdBy = currentActor;
-        this.lastModifiedBy = currentActor;
+        this.createdBy = UserContext.getUserId();
+        this.lastModifiedBy = UserContext.getUserId();
     }
 
     @PreUpdate
     protected void onUpdate() {
-        this.lastModifiedAt = LocalDateTime.now(ZoneId.of("UTC"));
-
-        long currentActor = 1L;
-        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        if (attributes != null) {
-            Long cachedId = (Long) attributes.getAttribute("AUDIT_USER_ID", ServletRequestAttributes.SCOPE_REQUEST);
-            if (cachedId != null) {
-                currentActor = cachedId;
-            }
-        }
-
-        this.lastModifiedBy = currentActor;
+        this.lastModifiedAt = LocalDateTime.now(java.time.ZoneOffset.UTC);
+        this.lastModifiedBy = UserContext.getUserId();
     }
 
 

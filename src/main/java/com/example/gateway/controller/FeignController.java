@@ -1,14 +1,14 @@
 package com.example.gateway.controller;
 
-import com.example.gateway.Dto.EmployeeRequestDto;
-import com.example.gateway.Dto.EmployeeResponseDto;
+import com.example.gateway.common.dto.EmployeeRequestDto;
+import com.example.gateway.common.dto.EmployeeResponseDto;
 import com.example.gateway.clients.UserFeignClient;
 import com.example.gateway.common.dto.CustomerRequestDto;
+import com.example.gateway.common.dto.CustomerResponseDto;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
@@ -21,24 +21,54 @@ public class FeignController {
         this.userfeignClient = userfeignClient;
     }
 
-    @GetMapping("/human/All")
-    public ResponseEntity<?> fetchExternalUser() {
+    @GetMapping("/human/AllEmployee")
+    public ResponseEntity<List<EmployeeResponseDto>> fetchExternalUser() {
         return userfeignClient.getDetails();
     }
 
     @PostMapping("/human/addEmployee")
-    public ResponseEntity<EmployeeResponseDto>  ferchData(@RequestBody EmployeeRequestDto requestDto){
-        return userfeignClient.Postmappings(requestDto);
+    public ResponseEntity<EmployeeResponseDto>  fetchData(@RequestBody EmployeeRequestDto requestDto){
+        return userfeignClient.postMappings(requestDto);
     }
 
-    @GetMapping("/human/AllCustomers")
-    public ResponseEntity<?> AllCustomers(){
-        return userfeignClient.AllCustomers();
+    @DeleteMapping("/human/deleteEmployee/{id}")
+    public String softDeleteEmployee(@PathVariable Long id) {
+        userfeignClient.softDeleteEmployee(id);
+        return "Employee soft-deleted successfully with ID: " + id;
     }
 
-    @PostMapping("/human/AddCustomer")
-    public ResponseEntity<?> addCustomer(@RequestBody CustomerRequestDto customerRequestDto){
-        return userfeignClient.addCustomer(customerRequestDto);
+    @GetMapping("/human/recycleBin")
+    public List<EmployeeResponseDto> getRecycleBin() {
+        return userfeignClient.getRecycleBin();
+    }
+
+    @PostMapping("/human/addCustomer")
+    public CustomerResponseDto addCustomer(@RequestBody CustomerRequestDto requestDto) {
+        return userfeignClient.addCustomer(requestDto);
+    }
+
+    @GetMapping("/human/allCustomers")
+    public List<CustomerResponseDto> getAllCustomers() {
+        return userfeignClient.getAllCustomers();
+    }
+
+    @GetMapping("/human/customer/{id}")
+    public CustomerResponseDto getCustomerById(@PathVariable Long id) {
+        return userfeignClient.getCustomerById(id);
+    }
+
+    @PutMapping("/human/updateCustomer/{id}")
+    public CustomerResponseDto updateCustomer(
+            @PathVariable Long id,
+            @RequestBody CustomerRequestDto requestDto) {
+
+        return userfeignClient.updateCustomer(id, requestDto);
+    }
+
+    @DeleteMapping("/human/deleteCustomer/{id}")
+    public String deleteCustomer(@PathVariable Long id) {
+        userfeignClient.deleteCustomer(id);
+        return "Customer deleted successfully with ID: " + id;
     }
 
 }

@@ -18,7 +18,10 @@ public class CustomerRequestDto {
     private String customerName;
 
     @NotBlank(message = "Contact number cannot be empty")
-    @Pattern(regexp = "^\\+?[0-9]{10,15}$", message = "Invalid contact number format")
+    @Pattern(
+            regexp = "^\\+?\\d{10,15}$",
+            message = "Invalid contact number format"
+    )
     private String contactNumber;
 
     @NotBlank(message = "Email cannot be empty")

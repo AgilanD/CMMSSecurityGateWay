@@ -22,8 +22,6 @@ public class ServiceHistoryResponseDto {
     private ServiceType serviceType;
     private BigDecimal cost;
     private String remarks;
-
-
     private LocalDateTime createdAt;
     private Long createdBy;
     private LocalDateTime lastModifiedAt;

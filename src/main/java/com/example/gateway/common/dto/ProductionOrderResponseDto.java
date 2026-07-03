@@ -23,13 +23,10 @@ public class ProductionOrderResponseDto {
     private Integer completedQuantity;
     private LocalDate expectedEndDate;
     private LocalDate actualEndDate;
-
-
     private LocalDateTime createdAt;
     private Long createdBy;
     private LocalDateTime lastModifiedAt;
     private Long lastModifiedBy;
-
 
     public enum OrderStatus {
         PENDING, IN_PROGRESS, COMPLETED, CANCELLED

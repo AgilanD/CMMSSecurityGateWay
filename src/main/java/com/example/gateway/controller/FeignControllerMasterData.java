@@ -1,11 +1,10 @@
 package com.example.gateway.controller;
 
-import com.example.gateway.Dto.CarModuleRequestDto;
-import com.example.gateway.Dto.CarModuleResponseDto;
-import com.example.gateway.Dto.PlantsRequestDto;
-import com.example.gateway.Dto.PlantsResponseDto;
+import com.example.gateway.common.dto.CarModuleRequestDto;
+import com.example.gateway.common.dto.CarModuleResponseDto;
+import com.example.gateway.common.dto.PlantsRequestDto;
+import com.example.gateway.common.dto.PlantsResponseDto;
 import com.example.gateway.clients.UserFeignClientMasterData;
-import com.example.gateway.clients.UserFeignClientSystem;
 import com.example.gateway.common.entity.SupplierRequestDto;
 import com.example.gateway.common.entity.Suppliers;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +20,7 @@ public class FeignControllerMasterData {
 
     @GetMapping("/MasterData/Checking")
     public String checking(){
-        return userfeignClientMasterData.Checkings();
+        return userfeignClientMasterData.checkingMessage();
     }
 
     @PostMapping("/MasterData/AddCustomer")
@@ -32,30 +31,30 @@ public class FeignControllerMasterData {
     }
 
     @PostMapping("/MasterData/AddPlants")
-    public PlantsResponseDto addCarModule(@RequestBody PlantsRequestDto PlantsRequestDtoRequestDto){
-        return userfeignClientMasterData.addPlants(PlantsRequestDtoRequestDto);
+    public PlantsResponseDto addCarModule(@RequestBody PlantsRequestDto plantsRequestDtoRequestDto){
+        return userfeignClientMasterData.addPlants(plantsRequestDtoRequestDto);
     }
 
     @GetMapping("/MasterData/GetAllPlants")
-    public List<?> GetAllPlants(){
-        return userfeignClientMasterData.GetAllPlants();
+    public List<PlantsResponseDto> getAllPlants(){
+        return userfeignClientMasterData.getAllPlants();
     }
 
 
     @GetMapping("/MasterData/GetAllSuppliers")
-    public List<Suppliers> GetAllSuppliers(){
-        return userfeignClientMasterData.GetAllSuppliers();
+    public List<Suppliers> getAllSuppliers(){
+        return userfeignClientMasterData.getAllSuppliers();
     }
 
     @PostMapping("/MasterData/AddSuppliers")
-    public String AddSuppliers(@RequestBody SupplierRequestDto suppilerRequestDto){
-        userfeignClientMasterData.AddSuppliers(suppilerRequestDto);
+    public String addSuppliers(@RequestBody SupplierRequestDto suppilerRequestDto){
+        userfeignClientMasterData.addSuppliers(suppilerRequestDto);
         return "SuccessFully SuppliersAdded";
     }
 
     @GetMapping("MasterData/GetsupplierById/{id}")
-    public Suppliers GetSupplierById(@PathVariable Long id){
-        return userfeignClientMasterData.GetSupplierById(id);
+    public Suppliers getSupplierById(@PathVariable Long id){
+        return userfeignClientMasterData.getSupplierById(id);
     }
 
 }

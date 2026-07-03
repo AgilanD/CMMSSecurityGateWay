@@ -17,7 +17,7 @@ public interface UserFeignClientProduction {
 
 
     @GetMapping("/Checking")
-    public String Checkings();
+    public String checkingMessage();
 
     @PostMapping("/AddQualityInspectionResponse")
     public QualityInspectionResponseDto create(@RequestBody QualityInspectionRequestDto request);

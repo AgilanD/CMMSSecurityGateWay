@@ -1,4 +1,4 @@
-package com.example.gateway.Dto;
+package com.example.gateway.common.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

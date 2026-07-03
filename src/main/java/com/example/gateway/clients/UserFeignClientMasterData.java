@@ -1,10 +1,10 @@
 package com.example.gateway.clients;
 
 
-import com.example.gateway.Dto.CarModuleRequestDto;
-import com.example.gateway.Dto.CarModuleResponseDto;
-import com.example.gateway.Dto.PlantsRequestDto;
-import com.example.gateway.Dto.PlantsResponseDto;
+import com.example.gateway.common.dto.CarModuleRequestDto;
+import com.example.gateway.common.dto.CarModuleResponseDto;
+import com.example.gateway.common.dto.PlantsRequestDto;
+import com.example.gateway.common.dto.PlantsResponseDto;
 import com.example.gateway.common.entity.SupplierRequestDto;
 import com.example.gateway.common.entity.Suppliers;
 import com.example.gateway.config.FeignClientInterceptorConfig;
@@ -18,7 +18,7 @@ public interface UserFeignClientMasterData {
 
 
     @GetMapping("/Checking")
-    public String Checkings();
+    public String checkingMessage();
 
     @PostMapping("/AddCustomer")
     public CarModuleResponseDto addCarModule(@RequestBody CarModuleRequestDto carModuleRequestDtoRequestDto);
@@ -28,16 +28,16 @@ public interface UserFeignClientMasterData {
     public PlantsResponseDto addPlants(@RequestBody PlantsRequestDto plantsRequestDto);
 
     @GetMapping("/GetAllPlants")
-    public List<?> GetAllPlants();
+    public List<PlantsResponseDto> getAllPlants();
 
     @GetMapping("/GetAllSuppliers")
-    public List<Suppliers> GetAllSuppliers();
+    public List<Suppliers> getAllSuppliers();
 
     @PostMapping("/AddSuppliers")
-    public String AddSuppliers(@RequestBody SupplierRequestDto suppilerRequestDto);
+    public String addSuppliers(@RequestBody SupplierRequestDto suppilerRequestDto);
 
     @GetMapping("/GetsupplierById/{id}")
-    public Suppliers GetSupplierById(@PathVariable Long id);
+    public Suppliers getSupplierById(@PathVariable Long id);
 
 
 

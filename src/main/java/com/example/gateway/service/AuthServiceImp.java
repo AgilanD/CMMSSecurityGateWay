@@ -5,11 +5,11 @@ import com.example.gateway.entity.Users;
 import com.example.gateway.repository.UserRepository;
 import com.example.gateway.security.JwtUtils;
 import com.example.gateway.util.UserMapper;
+import com.example.gateway.usercontext.UserContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseCookie;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -29,41 +29,65 @@ public class AuthServiceImp implements AuthService {
 
     @Override
     public void registerUser(UsersRequestDto requestDto) {
+
         if (requestDto == null) {
             throw new IllegalArgumentException("Registration request data cannot be null.");
         }
+
         if (userRepository.existsByUsername(requestDto.getUsername())) {
             throw new IllegalArgumentException("Username is already taken.");
         }
+
         if (userRepository.existsByEmail(requestDto.getEmail())) {
             throw new IllegalArgumentException("Email is already registered.");
         }
+
         if (!PASSWORD_PATTERN.matcher(requestDto.getPassword()).matches()) {
             throw new IllegalArgumentException("Password invalid. Requires min 8 chars, 1 uppercase, 1 digit, 1 special char.");
         }
+
+        UserContext.setUserId(1L);
 
         Users user = userMapper.convertToEntity(requestDto);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setActive(true);
 
         Users savedUser = userRepository.save(user);
-        userMapper.convertToResponseDto(savedUser);
+
+        UserContext.setUserId(savedUser.getId());
+
+        savedUser.setCreatedBy(savedUser.getId());
+        savedUser.setLastModifiedBy(savedUser.getId());
+
+        userRepository.save(savedUser);
+
+        UserContext.clear();
     }
 
     @Override
     public ResponseCookie authenticateAndBuildCookie(String username, String password) {
+
         Users user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid username or password."));
 
         if (!user.isActive()) {
             throw new IllegalArgumentException("Account is currently deactivated.");
         }
+
         if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new IllegalArgumentException("Invalid username or password.");
         }
 
-        user.setLastLogin(LocalDateTime.now(ZoneId.of("UTC")));
-        userRepository.save(user);
+        UserContext.setUserId(user.getId());
+
+        try {
+            user.setLastLogin(LocalDateTime.now(ZoneId.of("UTC")));
+            user.setLastModifiedBy(user.getId());
+
+            userRepository.save(user);
+        } finally {
+            UserContext.clear();
+        }
 
         return jwtUtils.generateJwtCookie(user.getUsername(), user.getRole().name(), user.getId());
     }
@@ -75,6 +99,7 @@ public class AuthServiceImp implements AuthService {
 
     @Override
     public void updateUser(Long id, UsersRequestDto requestDto) {
+
         if (requestDto == null) {
             throw new IllegalArgumentException("Update request data cannot be null.");
         }
@@ -94,7 +119,9 @@ public class AuthServiceImp implements AuthService {
             existingUser.setPassword(passwordEncoder.encode(requestDto.getPassword()));
         }
 
-        Users updatedUser = userRepository.save(existingUser);
-        userMapper.convertToResponseDto(updatedUser);
+        Long modifierId = (UserContext.getUserId() != null) ? UserContext.getUserId() : id;
+        existingUser.setLastModifiedBy(modifierId);
+
+        userRepository.save(existingUser);
     }
 }

@@ -7,6 +7,7 @@ import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 
 import java.time.LocalDateTime;
@@ -15,6 +16,7 @@ import java.time.LocalDateTime;
 @Table(name = "users")
 @Data
 @NoArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 @AllArgsConstructor
 @Builder
 public class Users {
@@ -47,7 +49,7 @@ public class Users {
     private LocalDateTime createdAt;
 
     @CreatedBy
-    @Column(name = "created_by", nullable = false, columnDefinition = "BIGINT DEFAULT 1")
+    @Column(name = "created_by", nullable = false, columnDefinition = "BIGINT DEFAULT 1L")
     private Long createdBy;
 
     @LastModifiedDate
@@ -55,7 +57,7 @@ public class Users {
     private LocalDateTime lastModifiedAt;
 
     @LastModifiedBy
-    @Column(name = "last_modified_by", nullable = false, columnDefinition = "BIGINT DEFAULT 1")
+    @Column(name = "last_modified_by", nullable = false, columnDefinition = "BIGINT DEFAULT 1L")
     private Long lastModifiedBy;
 
 

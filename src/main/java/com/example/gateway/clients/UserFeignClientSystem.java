@@ -11,21 +11,12 @@ import java.util.List;
 @FeignClient(name = "System", url = "http://localhost:8085/System",configuration = FeignClientInterceptorConfig.class)
 public interface UserFeignClientSystem {
 
-    @GetMapping("/checkings")
-    public String checkingMessage();
 
     @GetMapping("/GetAllAuditLogs")
     public List<AuditLogs> getAllAuditLogs();
 
-
     @PostMapping("/AddAuditLogs")
     public AuditLogResponseDto createAuditLog(@RequestBody AuditLogsRequestDto requestDto);
-
-    @PutMapping("/UpdateAuditLogs/{id}")
-    public AuditLogResponseDto updateAuditLog(@PathVariable Long id, @RequestBody AuditLogsRequestDto requestDto);
-
-    @DeleteMapping("/DeleteAuditLogs/{id}")
-    public String deleteAuditLog(@PathVariable Long id);
 
     @PostMapping("/CreateHistory")
     public ServiceHistoryResponseDto createHistory(@RequestBody ServiceHistoryRequestDto requestDto);

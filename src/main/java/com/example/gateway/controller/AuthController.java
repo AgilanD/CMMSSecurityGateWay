@@ -33,6 +33,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestParam String username, @RequestParam String password) {
         try {
+
             ResponseCookie jwtCookie = authService.authenticateAndBuildCookie(username, password);
             return ResponseEntity.ok()
                     .header(HttpHeaders.SET_COOKIE, jwtCookie.toString())

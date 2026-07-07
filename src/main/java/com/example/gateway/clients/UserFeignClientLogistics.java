@@ -1,6 +1,8 @@
 package com.example.gateway.clients;
 
 
+import com.example.gateway.common.dto.NotificationsRequestDto;
+import com.example.gateway.common.dto.NotificationsResponseDto;
 import com.example.gateway.common.dto.VehicalDeliveryRequestDto;
 import com.example.gateway.common.dto.VehicalDeliveryResponseDto;
 import com.example.gateway.config.FeignClientInterceptorConfig;
@@ -17,7 +19,7 @@ public interface UserFeignClientLogistics {
 
     @PostMapping("/AddDelivery")
     public VehicalDeliveryResponseDto createVehical(@RequestBody VehicalDeliveryRequestDto requestDto);
-    @GetMapping("/GetById/{id}")
+    @GetMapping("/GetByIdVehicals/{id}")
     public VehicalDeliveryResponseDto getByIdVehical(@PathVariable Long id);
 
     @GetMapping("/GetAllDeliveries")
@@ -26,7 +28,27 @@ public interface UserFeignClientLogistics {
     @PutMapping("/UpdateByIdVehicals/{id}")
     public VehicalDeliveryResponseDto updateVehical(@PathVariable Long  id, @RequestBody VehicalDeliveryRequestDto requestDto);
 
-    @DeleteMapping("/DeleteById/{id}")
+    @DeleteMapping("/DeleteByIdVehicals/{id}")
     public void deleteVehical(@PathVariable Long id);
+
+    @PostMapping("/AddNotification")
+    public NotificationsResponseDto createNotifications(@RequestBody NotificationsRequestDto requestDto);
+
+    @GetMapping("/GetNotificationById/{id}")
+    public NotificationsResponseDto notificationsgetById(@PathVariable Long id);
+
+    @GetMapping("/GetAllNotifications")
+    public List<NotificationsResponseDto> getAllNotifications();
+
+    @PutMapping("/UpdateNotificationById/{id}")
+    public NotificationsResponseDto updateNotifications(
+            @PathVariable Long id,
+            @RequestBody NotificationsRequestDto requestDto);
+
+    @PatchMapping("/MarkAsRead/{id}")
+    public NotificationsResponseDto markAsReadNotifications(@PathVariable Long id) ;
+
+    @DeleteMapping("/DeleteNotificationById/{id}")
+    public void delete(@PathVariable Long id);
 
 }

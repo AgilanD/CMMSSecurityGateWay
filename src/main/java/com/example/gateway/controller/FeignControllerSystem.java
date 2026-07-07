@@ -15,12 +15,6 @@ public class FeignControllerSystem {
     private final UserFeignClientSystem userFeignClientSystem;
 
 
-    @GetMapping("/System/checkings")
-    public String checkingMessage(){
-        return userFeignClientSystem.checkingMessage();
-    }
-
-
     @GetMapping("/System/GetAllAuditLogs")
     public List<AuditLogs> getAllAuditLogs(){
         return userFeignClientSystem.getAllAuditLogs();
@@ -31,16 +25,6 @@ public class FeignControllerSystem {
     public AuditLogResponseDto createAuditLog(@RequestBody AuditLogsRequestDto requestDto) {
         return userFeignClientSystem.createAuditLog(requestDto);
     }
-    @PutMapping("/System/UpdateAuditLogs/{id}")
-    public AuditLogResponseDto updateAuditLog(@PathVariable Long id, @RequestBody AuditLogsRequestDto requestDto) {
-        return userFeignClientSystem.updateAuditLog(id,requestDto);
-    }
-
-    @DeleteMapping("/System/DeleteAuditLogs/{id}")
-    public String deleteAuditLog(@PathVariable Long id) {
-        return userFeignClientSystem.deleteAuditLog(id);
-    }
-
 
     @PostMapping("/System/CreateHistory")
     public ServiceHistoryResponseDto createHistory(@RequestBody ServiceHistoryRequestDto requestDto) {

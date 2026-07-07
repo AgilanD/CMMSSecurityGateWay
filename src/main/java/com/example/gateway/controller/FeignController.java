@@ -1,15 +1,12 @@
 package com.example.gateway.controller;
 
-import com.example.gateway.common.dto.EmployeeRequestDto;
-import com.example.gateway.common.dto.EmployeeResponseDto;
+import com.example.gateway.aspect.AuditLoggable;
+import com.example.gateway.common.dto.*;
 import com.example.gateway.clients.UserFeignClient;
-import com.example.gateway.common.dto.CustomerRequestDto;
-import com.example.gateway.common.dto.CustomerResponseDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
 
 @RestController
 public class FeignController {
@@ -27,11 +24,13 @@ public class FeignController {
     }
 
     @PostMapping("/human/addEmployee")
+    @AuditLoggable(action = AuditLogsRequestDto.AuditAction.CREATE, tableName = "employee")
     public ResponseEntity<EmployeeResponseDto>  fetchData(@RequestBody EmployeeRequestDto requestDto){
         return userfeignClient.postMappings(requestDto);
     }
 
     @DeleteMapping("/human/deleteEmployee/{id}")
+    @AuditLoggable(action = AuditLogsRequestDto.AuditAction.DELETE, tableName = "employee")
     public String softDeleteEmployee(@PathVariable Long id) {
         userfeignClient.softDeleteEmployee(id);
         return "Employee soft-deleted successfully with ID: " + id;
@@ -43,6 +42,7 @@ public class FeignController {
     }
 
     @PostMapping("/human/addCustomer")
+    @AuditLoggable(action = AuditLogsRequestDto.AuditAction.CREATE, tableName = "customers")
     public CustomerResponseDto addCustomer(@RequestBody CustomerRequestDto requestDto) {
         return userfeignClient.addCustomer(requestDto);
     }
@@ -57,7 +57,8 @@ public class FeignController {
         return userfeignClient.getCustomerById(id);
     }
 
-    @PutMapping("/human/updateCustomer/{id}")
+    @PutMapping("/human/updateCustomerByIds/{id}")
+    @AuditLoggable(action = AuditLogsRequestDto.AuditAction.UPDATE, tableName = "customers")
     public CustomerResponseDto updateCustomer(
             @PathVariable Long id,
             @RequestBody CustomerRequestDto requestDto) {
@@ -66,6 +67,7 @@ public class FeignController {
     }
 
     @DeleteMapping("/human/deleteCustomer/{id}")
+    @AuditLoggable(action = AuditLogsRequestDto.AuditAction.DELETE, tableName = "customers")
     public String deleteCustomer(@PathVariable Long id) {
         userfeignClient.deleteCustomer(id);
         return "Customer deleted successfully with ID: " + id;

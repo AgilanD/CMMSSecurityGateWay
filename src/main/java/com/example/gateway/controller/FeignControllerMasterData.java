@@ -1,13 +1,12 @@
 package com.example.gateway.controller;
 
-import com.example.gateway.common.dto.CarModuleRequestDto;
-import com.example.gateway.common.dto.CarModuleResponseDto;
-import com.example.gateway.common.dto.PlantsRequestDto;
-import com.example.gateway.common.dto.PlantsResponseDto;
+import com.example.gateway.aspect.AuditLoggable;
+import com.example.gateway.common.dto.*;
 import com.example.gateway.clients.UserFeignClientMasterData;
 import com.example.gateway.common.entity.SupplierRequestDto;
 import com.example.gateway.common.entity.Suppliers;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,19 +17,14 @@ public class FeignControllerMasterData {
 
     private final UserFeignClientMasterData userfeignClientMasterData;
 
-    @GetMapping("/MasterData/Checking")
-    public String checking(){
-        return userfeignClientMasterData.checkingMessage();
-    }
-
-    @PostMapping("/MasterData/AddCustomer")
+    @PostMapping("/MasterData/AddCarModel")
+    @AuditLoggable(action = AuditLogsRequestDto.AuditAction.CREATE, tableName = "car_module")
     public CarModuleResponseDto  addCarModule(@RequestBody CarModuleRequestDto carModuleRequestDtoRequestDto){
-
-
         return userfeignClientMasterData. addCarModule(carModuleRequestDtoRequestDto);
     }
 
     @PostMapping("/MasterData/AddPlants")
+    @AuditLoggable(action = AuditLogsRequestDto.AuditAction.CREATE, tableName = "plants")
     public PlantsResponseDto addCarModule(@RequestBody PlantsRequestDto plantsRequestDtoRequestDto){
         return userfeignClientMasterData.addPlants(plantsRequestDtoRequestDto);
     }
@@ -40,13 +34,13 @@ public class FeignControllerMasterData {
         return userfeignClientMasterData.getAllPlants();
     }
 
-
     @GetMapping("/MasterData/GetAllSuppliers")
     public List<Suppliers> getAllSuppliers(){
         return userfeignClientMasterData.getAllSuppliers();
     }
 
     @PostMapping("/MasterData/AddSuppliers")
+    @AuditLoggable(action = AuditLogsRequestDto.AuditAction.CREATE, tableName = "suppliers")
     public String addSuppliers(@RequestBody SupplierRequestDto suppilerRequestDto){
         userfeignClientMasterData.addSuppliers(suppilerRequestDto);
         return "SuccessFully SuppliersAdded";
@@ -57,4 +51,8 @@ public class FeignControllerMasterData {
         return userfeignClientMasterData.getSupplierById(id);
     }
 
+    @GetMapping("/GetAllCarModule")
+    public ResponseEntity<List<CarModuleResponseDto>> getAllCarModules() {
+        return userfeignClientMasterData.getAllCarModules();
+    }
 }

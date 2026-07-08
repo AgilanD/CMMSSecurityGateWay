@@ -19,6 +19,7 @@ public class FeignControllerLogistics {
 
     @PostMapping("/Logistics/AddDelivery")
     @AuditLoggable(action = AuditLogsRequestDto.AuditAction.CREATE, tableName = "vehical_delivery")
+    @TrackNotification(type = NotificationsRequestDto.NotificationType.DELIVERY)
     public VehicalDeliveryResponseDto createVehical(@RequestBody VehicalDeliveryRequestDto requestDto) {
         return  userFeignClientLogistics.createVehical(requestDto);
     }

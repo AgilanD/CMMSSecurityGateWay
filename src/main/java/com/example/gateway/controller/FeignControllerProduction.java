@@ -5,10 +5,12 @@ import com.example.gateway.clients.UserFeignClientProduction;
 import com.example.gateway.common.dto.*;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class FeignControllerProduction {
@@ -38,6 +40,7 @@ public class FeignControllerProduction {
 
     @PutMapping("/Production/UpdateById/{id}")
     @AuditLoggable(action = AuditLogsRequestDto.AuditAction.UPDATE, tableName = "production_orders")
+
     public QualityInspectionResponseDto update(@PathVariable Long id, @RequestBody QualityInspectionRequestDto request){
         return userFeignClientProduction.update(id, request);
     }
@@ -47,7 +50,6 @@ public class FeignControllerProduction {
     public void delete(@PathVariable Long id) {
         userFeignClientProduction.delete(id);
     }
-
 
     @PostMapping("/Production/AddVehiclesinVENTED")
     @AuditLoggable(action = AuditLogsRequestDto.AuditAction.CREATE, tableName = "vehicals")
@@ -80,6 +82,7 @@ public class FeignControllerProduction {
     }
 
     @PostMapping("/Production/Productionsorders")
+    @AuditLoggable(action = AuditLogsRequestDto.AuditAction.CREATE, tableName = "production_orders")
     public ProductionOrderResponseDto createOrder(@Valid @RequestBody ProductionOrderRequestDto requestDto) {
         return userFeignClientProduction.createOrder(requestDto);
     }
@@ -95,11 +98,13 @@ public class FeignControllerProduction {
     }
 
     @PutMapping("/Production/Productionsorders/{id}")
+    @AuditLoggable(action = AuditLogsRequestDto.AuditAction.UPDATE, tableName = "production_orders")
     public ProductionOrderResponseDto updateOrder(@PathVariable Long id, @Valid @RequestBody ProductionOrderRequestDto requestDto) {
         return userFeignClientProduction.updateOrder(id, requestDto);
     }
 
     @DeleteMapping("/Production/Productionsorders/{id}")
+    @AuditLoggable(action = AuditLogsRequestDto.AuditAction.DELETE, tableName = "production_orders")
     public void deleteOrder(@PathVariable Long id) {
         userFeignClientProduction.deleteOrder(id);
     }

@@ -34,6 +34,19 @@ public class FeignControllerMasterData {
         return userfeignClientMasterData.getAllPlants();
     }
 
+
+    @PutMapping("/UpdatePlants/{id}")
+    public ResponseEntity<PlantsResponseDto> updatePlant(
+            @PathVariable Long id,
+            @RequestBody PlantsRequestDto plantsRequestDto) {
+        return userfeignClientMasterData.updatePlant(id,plantsRequestDto);
+    }
+
+    @DeleteMapping("DeletePlants/{id}")
+    public ResponseEntity<PlantsResponseDto> softDeletePlant(@PathVariable Long id) {
+        return userfeignClientMasterData.softDeletePlant(id);
+    }
+
     @GetMapping("/MasterData/GetAllSuppliers")
     public List<Suppliers> getAllSuppliers(){
         return userfeignClientMasterData.getAllSuppliers();

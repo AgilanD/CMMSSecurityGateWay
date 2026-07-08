@@ -43,5 +43,10 @@ public interface UserFeignClientMasterData {
     public ResponseEntity<List<CarModuleResponseDto>> getAllCarModules();
 
 
+    @PutMapping("/UpdatePlants/{id}")
+    public ResponseEntity<PlantsResponseDto> updatePlant(@PathVariable Long id, @RequestBody PlantsRequestDto plantsRequestDto);
+
+    @DeleteMapping("DeletePlants/{id}")
+    public ResponseEntity<PlantsResponseDto> softDeletePlant(@PathVariable Long id);
 
 }

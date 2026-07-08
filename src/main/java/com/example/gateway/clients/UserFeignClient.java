@@ -1,9 +1,6 @@
 package com.example.gateway.clients;
 
-import com.example.gateway.common.dto.EmployeeRequestDto;
-import com.example.gateway.common.dto.EmployeeResponseDto;
-import com.example.gateway.common.dto.CustomerRequestDto;
-import com.example.gateway.common.dto.CustomerResponseDto;
+import com.example.gateway.common.dto.*;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +15,7 @@ public interface UserFeignClient {
     public ResponseEntity<List<EmployeeResponseDto>> getDetails();
 
     @PostMapping("/addEmployee")
+
     public ResponseEntity<EmployeeResponseDto> postMappings(@RequestBody EmployeeRequestDto requestDto);
 
     @DeleteMapping("/deleteEmployee/{id}")
@@ -35,7 +33,7 @@ public interface UserFeignClient {
     @GetMapping("/customer/{id}")
     public CustomerResponseDto getCustomerById(@PathVariable Long id);
 
-    @PutMapping("/updateCustomer/{id}")
+    @PutMapping("/updateCustomerByIds/{id}")
     public CustomerResponseDto updateCustomer(@PathVariable Long id, @RequestBody CustomerRequestDto requestDto);
 
     @DeleteMapping("/deleteCustomer/{id}")

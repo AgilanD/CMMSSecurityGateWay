@@ -18,6 +18,9 @@ public interface UserFeignClientSystem {
     @PostMapping("/AddAuditLogs")
     public AuditLogResponseDto createAuditLog(@RequestBody AuditLogsRequestDto requestDto);
 
+    @GetMapping("/getAuditLogByIds/{id}")
+    public AuditLogResponseDto getAuditLogUsingIds(@PathVariable Long id);
+
     @PostMapping("/CreateHistory")
     public ServiceHistoryResponseDto createHistory(@RequestBody ServiceHistoryRequestDto requestDto);
 

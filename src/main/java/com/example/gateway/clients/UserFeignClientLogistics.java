@@ -14,9 +14,6 @@ import java.util.List;
 @FeignClient(name = "Logistics", url = "http://localhost:8082/Logistics",configuration = FeignClientInterceptorConfig.class)
 public interface UserFeignClientLogistics {
 
-    @GetMapping("/checking")
-    public String checkingMessage();
-
     @PostMapping("/AddDelivery")
     public VehicalDeliveryResponseDto createVehical(@RequestBody VehicalDeliveryRequestDto requestDto);
     @GetMapping("/GetByIdVehicals/{id}")

@@ -26,9 +26,7 @@ public class VehicleInventoryRequestDto {
     private VehicleStatus status;
 
     public enum VehicleStatus {
-
         MANUFACTURED, INSPECTED, DELIVERED
-
     }
 
 }

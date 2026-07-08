@@ -1,11 +1,9 @@
 package com.example.gateway.controller;
 
 
+import com.example.gateway.aspect.AuditLoggable;
 import com.example.gateway.clients.UserFeignClientLogistics;
-import com.example.gateway.common.dto.NotificationsRequestDto;
-import com.example.gateway.common.dto.NotificationsResponseDto;
-import com.example.gateway.common.dto.VehicalDeliveryRequestDto;
-import com.example.gateway.common.dto.VehicalDeliveryResponseDto;
+import com.example.gateway.common.dto.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -19,12 +17,8 @@ public class FeignControllerLogistics {
 
     private final UserFeignClientLogistics userFeignClientLogistics;
 
-    @GetMapping("/Logistics/checking")
-    public String fetchExternalUser() {
-        return userFeignClientLogistics.checkingMessage();
-    }
-
     @PostMapping("/Logistics/AddDelivery")
+    @AuditLoggable(action = AuditLogsRequestDto.AuditAction.CREATE, tableName = "vehical_delivery")
     public VehicalDeliveryResponseDto createVehical(@RequestBody VehicalDeliveryRequestDto requestDto) {
         return  userFeignClientLogistics.createVehical(requestDto);
     }
@@ -40,6 +34,7 @@ public class FeignControllerLogistics {
     }
 
     @PutMapping("/Logistics/UpdateByIdVehicals/{id}")
+    @AuditLoggable(action = AuditLogsRequestDto.AuditAction.UPDATE, tableName = "vehical_delivery")
     public VehicalDeliveryResponseDto updateVehical(
             @PathVariable Long id,
             @RequestBody VehicalDeliveryRequestDto requestDto) {
@@ -47,11 +42,13 @@ public class FeignControllerLogistics {
     }
 
     @DeleteMapping("/Logistics/DeleteByIdVehicals/{id}")
+    @AuditLoggable(action = AuditLogsRequestDto.AuditAction.DELETE, tableName = "vehical_delivery")
     public void deleteVehical(@PathVariable Long id) {
         userFeignClientLogistics.deleteVehical(id);
     }
 
     @PostMapping("/Logistics/AddNotification")
+    @AuditLoggable(action = AuditLogsRequestDto.AuditAction.CREATE, tableName = "notifications")
     public NotificationsResponseDto createNotifications(@RequestBody NotificationsRequestDto requestDto) {
         return userFeignClientLogistics.createNotifications(requestDto);
     }
@@ -67,6 +64,7 @@ public class FeignControllerLogistics {
     }
 
     @PutMapping("/Logistics/UpdateNotificationById/{id}")
+    @AuditLoggable(action = AuditLogsRequestDto.AuditAction.UPDATE, tableName = "notifications")
     public NotificationsResponseDto updateNotifications(
             @PathVariable Long id,
             @RequestBody NotificationsRequestDto requestDto) {
@@ -79,6 +77,7 @@ public class FeignControllerLogistics {
     }
 
     @DeleteMapping("/Logistics/DeleteNotificationById/{id}")
+    @AuditLoggable(action = AuditLogsRequestDto.AuditAction.DELETE, tableName = "notifications")
     public void delete(@PathVariable Long id) {
         userFeignClientLogistics.delete(id);
     }

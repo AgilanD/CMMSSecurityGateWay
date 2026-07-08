@@ -9,6 +9,7 @@ import com.example.gateway.common.entity.SupplierRequestDto;
 import com.example.gateway.common.entity.Suppliers;
 import com.example.gateway.config.FeignClientInterceptorConfig;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,12 +18,8 @@ import java.util.List;
 public interface UserFeignClientMasterData {
 
 
-    @GetMapping("/Checking")
-    public String checkingMessage();
-
-    @PostMapping("/AddCustomer")
+    @PostMapping("/AddCarModule")
     public CarModuleResponseDto addCarModule(@RequestBody CarModuleRequestDto carModuleRequestDtoRequestDto);
-
 
     @PostMapping("/AddPlants")
     public PlantsResponseDto addPlants(@RequestBody PlantsRequestDto plantsRequestDto);
@@ -39,6 +36,11 @@ public interface UserFeignClientMasterData {
     @GetMapping("/GetsupplierById/{id}")
     public Suppliers getSupplierById(@PathVariable Long id);
 
+    @PostMapping("/AddCarModule")
+    public CarModuleResponseDto addCustomer(@RequestBody CarModuleRequestDto carModuleRequestDtoRequestDto);
+
+    @GetMapping("/GetAllCarModule")
+    public ResponseEntity<List<CarModuleResponseDto>> getAllCarModules();
 
 
 

@@ -1,10 +1,8 @@
 package com.example.gateway.controller;
 
+import com.example.gateway.aspect.AuditLoggable;
 import com.example.gateway.clients.UserFeignClientProduction;
-import com.example.gateway.common.dto.QualityInspectionRequestDto;
-import com.example.gateway.common.dto.QualityInspectionResponseDto;
-import com.example.gateway.common.dto.VehicleInventoryRequestDto;
-import com.example.gateway.common.dto.VehicleInventoryResponseDto;
+import com.example.gateway.common.dto.*;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +21,7 @@ public class FeignControllerProduction {
     }
 
     @PostMapping("/Production/AddQualityInspectionResponse")
+    @AuditLoggable(action = AuditLogsRequestDto.AuditAction.CREATE, tableName = "production_orders")
     public QualityInspectionResponseDto create(@RequestBody QualityInspectionRequestDto request) {
         return userFeignClientProduction.create(request);
     }
@@ -38,17 +37,20 @@ public class FeignControllerProduction {
     }
 
     @PutMapping("/Production/UpdateById/{id}")
+    @AuditLoggable(action = AuditLogsRequestDto.AuditAction.UPDATE, tableName = "production_orders")
     public QualityInspectionResponseDto update(@PathVariable Long id, @RequestBody QualityInspectionRequestDto request){
         return userFeignClientProduction.update(id, request);
     }
 
     @DeleteMapping("/Production/DeleteById/{id}")
+    @AuditLoggable(action = AuditLogsRequestDto.AuditAction.DELETE, tableName = "production_orders")
     public void delete(@PathVariable Long id) {
         userFeignClientProduction.delete(id);
     }
 
 
-    @PostMapping("/Production/AddVehicles")
+    @PostMapping("/Production/AddVehiclesinVENTED")
+    @AuditLoggable(action = AuditLogsRequestDto.AuditAction.CREATE, tableName = "vehicals")
     public VehicleInventoryResponseDto creates(@Valid @RequestBody VehicleInventoryRequestDto requestDto) {
         return userFeignClientProduction.creates(requestDto);
     }
@@ -64,6 +66,7 @@ public class FeignControllerProduction {
     }
 
     @PutMapping("/Production/AddVehicle/{id}")
+    @AuditLoggable(action = AuditLogsRequestDto.AuditAction.UPDATE, tableName = "vehicals")
     public VehicleInventoryResponseDto updates(
             @PathVariable Long id,
             @Valid @RequestBody VehicleInventoryRequestDto requestDto) {
@@ -71,8 +74,34 @@ public class FeignControllerProduction {
     }
 
     @DeleteMapping("/Production/AddVehicle/{id}")
+    @AuditLoggable(action = AuditLogsRequestDto.AuditAction.DELETE, tableName = "vehicals")
     public void deleteByIds(@PathVariable Long id) {
         userFeignClientProduction.deleteByIds(id);
+    }
+
+    @PostMapping("/Production/Productionsorders")
+    public ProductionOrderResponseDto createOrder(@Valid @RequestBody ProductionOrderRequestDto requestDto) {
+        return userFeignClientProduction.createOrder(requestDto);
+    }
+
+    @GetMapping("/Production/Productionsorders/{id}")
+    public ProductionOrderResponseDto getOrderById(@PathVariable Long id) {
+        return userFeignClientProduction.getOrderById(id);
+    }
+
+    @GetMapping("/Production/Productionsorders")
+    public List<ProductionOrderResponseDto> getAllOrders() {
+        return userFeignClientProduction.getAllOrders();
+    }
+
+    @PutMapping("/Production/Productionsorders/{id}")
+    public ProductionOrderResponseDto updateOrder(@PathVariable Long id, @Valid @RequestBody ProductionOrderRequestDto requestDto) {
+        return userFeignClientProduction.updateOrder(id, requestDto);
+    }
+
+    @DeleteMapping("/Production/Productionsorders/{id}")
+    public void deleteOrder(@PathVariable Long id) {
+        userFeignClientProduction.deleteOrder(id);
     }
 
 }

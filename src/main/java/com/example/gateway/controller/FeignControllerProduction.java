@@ -1,6 +1,7 @@
 package com.example.gateway.controller;
 
 import com.example.gateway.aspect.AuditLoggable;
+import com.example.gateway.aspect.TrackNotification;
 import com.example.gateway.clients.UserFeignClientProduction;
 import com.example.gateway.common.dto.*;
 import jakarta.validation.Valid;
@@ -39,8 +40,8 @@ public class FeignControllerProduction {
     }
 
     @PutMapping("/Production/UpdateById/{id}")
-    @AuditLoggable(action = AuditLogsRequestDto.AuditAction.UPDATE, tableName = "production_orders")
-
+    @AuditLoggable(action = AuditLogsRequestDto.AuditAction.UPDATE, tableName = "quality_inspections")
+    @TrackNotification(type = NotificationsRequestDto.NotificationType.QC_FAIL)
     public QualityInspectionResponseDto update(@PathVariable Long id, @RequestBody QualityInspectionRequestDto request){
         return userFeignClientProduction.update(id, request);
     }
@@ -99,6 +100,7 @@ public class FeignControllerProduction {
 
     @PutMapping("/Production/Productionsorders/{id}")
     @AuditLoggable(action = AuditLogsRequestDto.AuditAction.UPDATE, tableName = "production_orders")
+    @TrackNotification(type = NotificationsRequestDto.NotificationType.STATUS_CHANGE)
     public ProductionOrderResponseDto updateOrder(@PathVariable Long id, @Valid @RequestBody ProductionOrderRequestDto requestDto) {
         return userFeignClientProduction.updateOrder(id, requestDto);
     }

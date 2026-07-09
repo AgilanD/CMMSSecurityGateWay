@@ -46,20 +46,25 @@ public class AuthServiceImp implements AuthService {
             throw new IllegalArgumentException("Password invalid. Requires min 8 chars, 1 uppercase, 1 digit, 1 special char.");
         }
 
-        UserContext.setUserId(1L);
+        Long contextActorId = UserContext.getUserId();
+        Long initialTrackingId = (contextActorId != null) ? contextActorId : 1L;
 
         Users user = userMapper.convertToEntity(requestDto);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setActive(true);
 
+        user.setCreatedBy(initialTrackingId);
+        user.setLastModifiedBy(initialTrackingId);
+
         Users savedUser = userRepository.save(user);
 
-        UserContext.setUserId(savedUser.getId());
+        if (contextActorId == null) {
+            UserContext.setUserId(savedUser.getId());
+            savedUser.setCreatedBy(savedUser.getId());
+            savedUser.setLastModifiedBy(savedUser.getId());
 
-        savedUser.setCreatedBy(savedUser.getId());
-        savedUser.setLastModifiedBy(savedUser.getId());
-
-        userRepository.save(savedUser);
+            userRepository.save(savedUser);
+        }
 
         UserContext.clear();
     }

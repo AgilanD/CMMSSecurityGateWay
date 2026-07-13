@@ -18,12 +18,9 @@ public class AuditLogResponseDto {
     private Long recordId;
     private AuditAction action;
     private String changedData;
-
     private Long performedById;
     private String performedByUsername;
-
     private String ipAddress;
-
     private LocalDateTime createdAt;
     private Long createdBy;
     private LocalDateTime lastModifiedAt;

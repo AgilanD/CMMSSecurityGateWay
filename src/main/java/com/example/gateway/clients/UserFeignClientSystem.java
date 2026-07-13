@@ -1,6 +1,5 @@
 package com.example.gateway.clients;
 
-import com.example.gateway.common.entity.AuditLogs;
 import com.example.gateway.common.dto.*;
 import com.example.gateway.config.FeignClientInterceptorConfig;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -13,7 +12,7 @@ public interface UserFeignClientSystem {
 
 
     @GetMapping("/GetAllAuditLogs")
-    public List<AuditLogs> getAllAuditLogs();
+    public List<AuditLogResponseDto> getAllAuditLogs();
 
     @PostMapping("/AddAuditLogs")
     public AuditLogResponseDto createAuditLog(@RequestBody AuditLogsRequestDto requestDto);

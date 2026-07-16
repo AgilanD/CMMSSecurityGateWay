@@ -74,6 +74,7 @@ public class FeignControllerLogistics {
     }
 
     @PatchMapping("/Logistics/MarkAsRead/{id}")
+    @AuditLoggable(action = AuditLogsRequestDto.AuditAction.UPDATE, tableName = "notifications")
     public NotificationsResponseDto markAsReadNotifications(@PathVariable Long id) {
         return userFeignClientLogistics.markAsReadNotifications(id);
     }

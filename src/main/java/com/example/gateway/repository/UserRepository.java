@@ -13,5 +13,4 @@ public interface UserRepository extends JpaRepository<Users, Long> {
     boolean existsByEmail(String email);
     @Query(value = "SELECT nextval('users_id_seq')", nativeQuery = true)
     Long getNextSequenceId();
-
 }

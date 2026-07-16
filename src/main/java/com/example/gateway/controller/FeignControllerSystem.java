@@ -2,7 +2,6 @@ package com.example.gateway.controller;
 
 import com.example.gateway.aspect.AuditLoggable;
 import com.example.gateway.clients.UserFeignClientSystem;
-import com.example.gateway.common.entity.AuditLogs;
 import com.example.gateway.common.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +16,7 @@ public class FeignControllerSystem {
 
 
     @GetMapping("/System/GetAllAuditLogs")
-    public List<AuditLogs> getAllAuditLogs(){
+    public List<AuditLogResponseDto> getAllAuditLogs(){
         return userFeignClientSystem.getAllAuditLogs();
     }
 

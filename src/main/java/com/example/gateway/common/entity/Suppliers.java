@@ -1,5 +1,6 @@
 package com.example.gateway.common.entity;
 
+import com.example.gateway.usercontext.UserContext;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Max;
@@ -69,5 +70,20 @@ public class Suppliers {
     @LastModifiedBy
     @Column(name = "last_modified_by", nullable = false)
     private Long lastModifiedBy = 1L;
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now(java.time.ZoneOffset.UTC);
+        this.lastModifiedAt = LocalDateTime.now(java.time.ZoneOffset.UTC);
+
+        this.createdBy = UserContext.getUserId();
+        this.lastModifiedBy = UserContext.getUserId();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.lastModifiedAt = LocalDateTime.now(java.time.ZoneOffset.UTC);
+        this.lastModifiedBy = UserContext.getUserId();
+    }
 
 }
